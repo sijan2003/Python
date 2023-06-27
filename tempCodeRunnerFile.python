@@ -1,0 +1,15 @@
+n=int(input("enter the number of rows:"))
+i=1
+j=1
+k=1
+space=n-1
+astcount=1
+for i in range(n):
+    for j in range(space):
+        print(" ",end="")
+    for k in range(astcount):
+        print("*",end="")
+    print("\n")
+    space-=1
+    astcount+=2
+
