@@ -64,6 +64,7 @@ def mechanics():
         count += 1
 
     C[a] = str(count)
+    B[a]='X'
     return True
 
 
