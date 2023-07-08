@@ -21,9 +21,9 @@ def board():
         print()
         print('-' * 40, '    ', '-' * 40)
 
-
-def set_bombs():
+def set_bombs(initial_guess):
     bomb_indices = random.sample(range(len(A)), 6)
+    bomb_indices.remove(initial_guess)
     for index in bomb_indices:
         A[index] = '&'
 
@@ -41,7 +41,6 @@ def display_board():
             n += 1
         print()
         print('-' * 40, '    ', '-' * 40)
-
 
 def mechanics():
     count = 0
@@ -71,26 +70,37 @@ def mechanics():
     if a % 5 != 4 and a < 20 and A[a + 6] == '&':
         count += 1
     C[a] = str(count)
-    B[a]='X'
+    B[a] = 'X'
     return True
 
-
-def first_move():
+def first_move(ui):
     mechanics()
 
     for _ in range(8):
         while True:
             randomj = random.randint(0, 24)
-            if C[randomj] == '*':
+            if C[randomj] == '*' and randomj != ui:
                 break
+
         count = 0
-        if randomj % 5 != 0 and A[randomj - 1] == '&':
+        row = randomj // 5
+        col = randomj % 5
+
+        if col > 0 and A[randomj - 1] == '&':
             count += 1
-        if randomj % 5 != 4 and A[randomj + 1] == '&':
+        if col < 4 and A[randomj + 1] == '&':
             count += 1
-        if randomj >= 5 and A[randomj - 5] == '&':
+        if row > 0 and A[randomj - 5] == '&':
             count += 1
-        if randomj < 20 and A[randomj + 5] == '&':
+        if row < 4 and A[randomj + 5] == '&':
+            count += 1
+        if col > 0 and row > 0 and A[randomj - 6] == '&':
+            count += 1
+        if col < 4 and row > 0 and A[randomj - 4] == '&':
+            count += 1
+        if col > 0 and row < 4 and A[randomj + 4] == '&':
+            count += 1
+        if col < 4 and row < 4 and A[randomj + 6] == '&':
             count += 1
 
         C[randomj] = str(count)
@@ -99,11 +109,12 @@ def first_move():
 
 def lets_play():
     print("MINESWEEPER!!!!!!!!!!!!!!!!!!!!!!")
-
-    set_bombs()
-    first_move()
+    ui = int(input("Enter the initial guess: "))
+    set_bombs(ui)
+    first_move(ui)
     while True:
         if not mechanics():
             break
 
+board()
 lets_play()
