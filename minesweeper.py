@@ -62,7 +62,14 @@ def mechanics():
         count += 1
     if a < 20 and A[a + 5] == '&':
         count += 1
-
+    if a % 5 != 0 and a >= 5 and A[a - 6] == '&':
+        count += 1
+    if a % 5 != 4 and a >= 5 and A[a - 4] == '&':
+        count += 1
+    if a % 5 != 0 and a < 20 and A[a + 4] == '&':
+        count += 1
+    if a % 5 != 4 and a < 20 and A[a + 6] == '&':
+        count += 1
     C[a] = str(count)
     B[a]='X'
     return True
