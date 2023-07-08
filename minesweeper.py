@@ -1,11 +1,11 @@
-
 import random
 
-A = ['*' for i in range(49)]
-B = [i for i in range(0, 30)]
-C=["*" for i in range (49)]
+A = ['*' for _ in range(26)]
+B = [i for i in range(0, 26)]
+C = ['*' for _ in range(26)]
+
 def clear_screen():
-    print("\033[H\033[J") 
+    print("\033[H\033[J")
 
 def board():
     i = 0
@@ -19,21 +19,14 @@ def board():
             print(f'| {B[n]:^3} |', end=' ')
             n += 1
         print()
-        print('-' * 40,'    ','-'*40)
-
-
-    
+        print('-' * 40, '    ', '-' * 40)
 
 
 def set_bombs():
-    for _ in range(6):
-        while True:
-            randomj = random.randint(0, 25)
-            if A[randomj] != '&':
-                A[randomj] = '&'
-                break
+    bomb_indices = random.sample(range(len(A)), 6)
+    for index in bomb_indices:
+        A[index] = '&'
 
-   
 def display_board():
     clear_screen()
     i = 0
@@ -47,13 +40,13 @@ def display_board():
             print(f'| {B[n]:^3} |', end=' ')
             n += 1
         print()
-        print('-' * 40,'    ','-'*40)
+        print('-' * 40, '    ', '-' * 40)
 
 
 def mechanics():
     count = 0
     display_board()
-    a = int(input("Choose the number: "))
+    a = int(input("Choose a number: "))
     if A[a] == '&':
         print("Game Over! You hit a bomb!")
         return False
@@ -70,17 +63,14 @@ def mechanics():
     if a < 20 and A[a + 5] == '&':
         count += 1
 
-    j = str(count)
-    C[a] = j
-
-    
+    C[a] = str(count)
     return True
 
 
 def first_move():
     mechanics()
-    
-    for i in range(8):
+
+    for _ in range(8):
         while True:
             randomj = random.randint(0, 24)
             if C[randomj] == '*':
@@ -100,11 +90,11 @@ def first_move():
     display_board()
 
 def lets_play():
-   print("MINESWEEPER!!!!!!!!!!!!!!!!!!!!!!")
+    print("MINESWEEPER!!!!!!!!!!!!!!!!!!!!!!")
 
-   set_bombs()
-   first_move()
-   while True:
+    set_bombs()
+    first_move()
+    while True:
         if not mechanics():
             break
 
