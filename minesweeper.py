@@ -1,8 +1,8 @@
 import random
 
-A = ['*' for _ in range(26)]
+A = ['▩' for _ in range(26)]
 B = [i for i in range(0, 26)]
-C = ['*' for _ in range(26)]
+C = ['▩' for _ in range(26)]
 
 def clear_screen():
     print("\033[H\033[J")
@@ -12,18 +12,19 @@ def board():
     n = 0
     for _ in range(5):
         for _ in range(5):
-            print(f'| {A[i]:^3} |', end=' ')
+            print(f'| {A[i]:^2} |', end=' ')
             i += 1
         print(end='      ')
         for _ in range(5):
-            print(f'| {B[n]:^3} |', end=' ')
+            print(f'| {B[n]:^2} |', end=' ')
             n += 1
         print()
-        print('-' * 40, '    ', '-' * 40)
+    print('-' * 40, '    ', '-' * 40)
 
 def set_bombs(initial_guess):
     bomb_indices = random.sample(range(len(A)), 6)
-    bomb_indices.remove(initial_guess)
+    if initial_guess in bomb_indices:
+        bomb_indices.remove(initial_guess)
     for index in bomb_indices:
         A[index] = '&'
 
@@ -33,14 +34,14 @@ def display_board():
     n = 0
     for _ in range(5):
         for _ in range(5):
-            print(f'| {C[i]:^3} |', end=' ')
+            print(f'| {C[i]:^2} |', end=' ')
             i += 1
         print(end='      ')
         for _ in range(5):
-            print(f'| {B[n]:^3} |', end=' ')
+            print(f'| {B[n]:^2} |', end=' ')
             n += 1
         print()
-        print('-' * 40, '    ', '-' * 40)
+    print('-' * 40, '    ', '-' * 40)
 
 def mechanics():
     count = 0
@@ -50,7 +51,7 @@ def mechanics():
         print("Game Over! You hit a bomb!")
         return False
     # Check for win condition
-    if C.count('*') == 6:
+    if C.count('▩') == 6:
         print("Congratulations! You won the game!")
         return False
     if a % 5 != 0 and A[a - 1] == '&':
@@ -79,7 +80,7 @@ def first_move(ui):
     for _ in range(8):
         while True:
             randomj = random.randint(0, 24)
-            if C[randomj] == '*' and randomj != ui:
+            if C[randomj] == '▩' and randomj != ui:
                 break
 
         count = 0
@@ -109,7 +110,7 @@ def first_move(ui):
 
 def lets_play():
     print("MINESWEEPER!!!!!!!!!!!!!!!!!!!!!!")
-    ui = int(input("Enter the initial guess: "))
+    ui = int(input("Enter the initial guess (0-24): "))
     set_bombs(ui)
     first_move(ui)
     while True:
